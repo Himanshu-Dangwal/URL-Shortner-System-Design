@@ -1,0 +1,37 @@
+{
+  "name": "url_shortner",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev:api" : "node services/api/index.js",
+    "dev:redirect" : "node services/redirect/index.js",
+    "dev:worker" : "node services/worker/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Himanshu-Dangwal/URL_Shortner.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Himanshu-Dangwal/URL_Shortner/issues"
+  },
+  "homepage": "https://github.com/Himanshu-Dangwal/URL_Shortner#readme",
+  "dependencies": {
+    "amqplib": "^0.10.9",
+    "body-parser": "^2.2.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "ioredis": "^5.8.2",
+    "joi": "^18.0.2",
+    "mongodb": "^7.0.0",
+    "mongoose": "^9.0.0",
+    "nanoid": "^5.1.6",
+    "nodemon": "^3.1.11",
+    "pg": "^8.16.3"
+  }
+}
