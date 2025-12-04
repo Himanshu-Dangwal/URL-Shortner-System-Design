@@ -188,7 +188,7 @@ These are the _exact_ steps a student can follow to get everything running.
 ### 6.1 Clone the repository
 
 ```bash
-git clone <your-repo-url> url_shortener-system-design
+git clone https://github.com/Himanshu-Dangwal/URL-Shortner-System-Design.git url_shortener-system-design
 cd url_shortener-system-design
 ```
 
