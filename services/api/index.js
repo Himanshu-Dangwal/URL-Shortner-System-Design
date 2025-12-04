@@ -49,7 +49,6 @@ app.post("/shorten", async (req, res) => {
 
 app.get("/stats/:code", async (req, res) => {
   const { code } = req.params;
-  // TODO: implement aggregation from Mongo
   res.json({ code, clicks: 0 });
 });
 
