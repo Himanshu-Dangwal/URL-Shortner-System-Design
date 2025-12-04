@@ -1,0 +1,108 @@
+version: "3.9"
+services:
+  postgres_shard_a:
+    image: postgres:16
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: urls_a
+    ports:
+      - "5433:5432"
+
+  postgres_shard_b:
+    image: postgres:16
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: urls_b
+    ports:
+      - "5434:5432"
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: pass
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  mongo:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+
+  api1:
+    build: .
+    command: node services/api/index.js
+    environment:
+      NODE_ENV: development
+      API_PORT: 3000
+    depends_on:
+      - postgres_shard_a
+      - postgres_shard_b
+      - redis
+      - rabbitmq
+      - mongo
+
+  api2:
+    build: .
+    command: node services/api/index.js
+    environment:
+      NODE_ENV: development
+      API_PORT: 3000
+    depends_on:
+      - postgres_shard_a
+      - postgres_shard_b
+      - redis
+      - rabbitmq
+      - mongo
+
+  redirect1:
+    build: .
+    command: node services/redirect/index.js
+    environment:
+      NODE_ENV: development
+      REDIRECT_PORT: 3001
+    depends_on:
+      - postgres_shard_a
+      - postgres_shard_b
+      - redis
+      - rabbitmq
+      - mongo
+
+  redirect2:
+    build: .
+    command: node services/redirect/index.js
+    environment:
+      NODE_ENV: development
+      REDIRECT_PORT: 3001
+    depends_on:
+      - postgres_shard_a
+      - postgres_shard_b
+      - redis
+      - rabbitmq
+      - mongo
+
+  worker:
+    build: .
+    command: node services/worker/index.js
+    depends_on:
+      - rabbitmq
+      - mongo
+    restart: always
+
+  nginx:
+    image: nginx:1.27
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - api1
+      - api2
+      - redirect1
+      - redirect2
